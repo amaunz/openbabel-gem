@@ -12,4 +12,7 @@ openbabel gem has been tested with ruby 1.9. It only compiles on POSIX systems a
 ## Install
 gem install openbabel
 
-It downloads the sources, compiles the ruby bindings and installs them. Check out [http://cs.maunz.de](http://cs.maunz.de) for more information.
+It downloads the sources, compiles OpenBabel (if not installed) and the ruby bindings and installs them.
+If OpenBabel is not yet installed installation may last very long - please be patient.
+
+Check out [http://cs.maunz.de](http://cs.maunz.de) for more information.
