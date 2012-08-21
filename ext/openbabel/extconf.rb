@@ -20,7 +20,7 @@ begin
     puts "Configuring OpenBabel"
     puts `cmake #{ob_main_dir} -DCMAKE_INSTALL_PREFIX=#{lib_dir}`
     openbabel_libs = false
-    openbabel_libs = true if `ldconfig -p`.split("\n").grep(/openbabel/)
+    openbabel_libs = true if `/sbin/ldconfig -p`.split("\n").grep(/openbabel/)
     unless openbabel_libs
       ENV["LD_LIBRARY_PATH"].split(":").each do |dir|
         openbabel_libs = true unless Dir[File.join(dir,"*libopenbabel*")].empty?
