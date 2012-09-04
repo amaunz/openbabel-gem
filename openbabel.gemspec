@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name               = "openbabel"
-  s.version            = "2.3.1.5"
+  s.version            = "2.3.1.6"
 
   s.authors = ["Andreas Maunz, Christoph Helma"]
   s.date = %q{2012-04-03}
