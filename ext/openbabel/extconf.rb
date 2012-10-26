@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'tmpdir'
+require 'mkmf'
 
 ob_num_ver="2.3.1"
 ob_ver="openbabel-"+ob_num_ver
@@ -19,13 +20,7 @@ begin
   Dir.chdir ob_main_dir do
     puts "Configuring OpenBabel"
     puts `cmake #{ob_main_dir} -DCMAKE_INSTALL_PREFIX=#{lib_dir}`
-    openbabel_libs = false
-    openbabel_libs = true if `/sbin/ldconfig -p`.split("\n").grep(/openbabel/)
-    unless openbabel_libs
-      ENV["LD_LIBRARY_PATH"].split(":").each do |dir|
-        openbabel_libs = true unless Dir[File.join(dir,"*libopenbabel*")].empty?
-      end
-    end
+    openbabel_libs = have_library('openbabel')
     unless openbabel_libs
       puts "OpenBabel not installed. Compiling sources."
       puts `make`
