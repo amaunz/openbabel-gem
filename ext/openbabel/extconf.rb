@@ -37,7 +37,7 @@ begin
     `sed -i -e 's/-flat_namespace//' Makefile`
     puts `make`
   end
-  FileUtils.cp(ob_bindings_dir+"/openbabel.so", "./")
+  FileUtils.cp(ob_bindings_dir+"/openbabel.#{RbConfig::CONFIG["DLEXT"]}", "./")
 ensure
   FileUtils.remove_entry_secure main_dir
 end
