@@ -38,6 +38,18 @@ begin
     puts `make`
   end
   FileUtils.cp(ob_bindings_dir+"/openbabel.#{RbConfig::CONFIG["DLEXT"]}", "./")
+	File.open('Makefile', 'w') do |makefile|
+		makefile.write <<"EOF"
+.PHONY: openbabel.#{RbConfig::CONFIG["DLEXT"]}
+openbabel.#{RbConfig::CONFIG["DLEXT"]}:
+	chmod 755 openbabel.#{RbConfig::CONFIG["DLEXT"]}
+
+.PHONY: install
+install:
+	mkdir -p ../../lib/openbabel
+	mv openbabel.#{RbConfig::CONFIG["DLEXT"]} ../../lib/openbabel
+EOF
+	end
 ensure
   FileUtils.remove_entry_secure main_dir
 end
