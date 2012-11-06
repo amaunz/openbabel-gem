@@ -12,6 +12,6 @@ Gem::Specification.new do |s|
   s.summary = %q{OpenBabel!}
   s.test_files = ["test/test_openbabel.rb"]
 
-  s.files = ["Rakefile", "lib/openbabel.rb", "ext/openbabel/Makefile"]
+  s.files = ["Rakefile", "lib/openbabel.rb"]
   s.extensions = ['ext/openbabel/extconf.rb']
 end

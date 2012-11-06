@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'tmpdir'
+require 'mkmf'
 
 ob_num_ver="2.3.1"
 ob_ver="openbabel-"+ob_num_ver
@@ -19,13 +20,7 @@ begin
   Dir.chdir ob_main_dir do
     puts "Configuring OpenBabel"
     puts `cmake #{ob_main_dir} -DCMAKE_INSTALL_PREFIX=#{lib_dir}`
-    openbabel_libs = false
-    openbabel_libs = true if `/sbin/ldconfig -p`.split("\n").grep(/openbabel/)
-    unless openbabel_libs
-      ENV["LD_LIBRARY_PATH"].split(":").each do |dir|
-        openbabel_libs = true unless Dir[File.join(dir,"*libopenbabel*")].empty?
-      end
-    end
+    openbabel_libs = have_library('openbabel')
     unless openbabel_libs
       puts "OpenBabel not installed. Compiling sources."
       puts `make`
@@ -34,15 +29,27 @@ begin
   end
   Dir.chdir ob_bindings_dir do
     puts "Compiling and instaling OpenBabel Ruby bindings."
-    `sed -i 's/Init_OpenBabel/Init_openbabel/g' *cpp`
+    `sed -i -e 's/Init_OpenBabel/Init_openbabel/g' *cpp`
     # get include and lib from pkg-config
     ob_include=`pkg-config openbabel-2.0 --cflags-only-I`.sub(/\s+/,'').sub(/-I/,'')
     ob_lib=`pkg-config openbabel-2.0 --libs-only-L`.sub(/\s+/,'').sub(/-L/,'')
     `ruby extconf.rb --with-openbabel-include=#{ob_include} --with-openbabel-lib=#{ob_lib}`
-    `sed -i 's/-flat_namespace//' Makefile`
+    `sed -i -e 's/-flat_namespace//' Makefile`
     puts `make`
   end
-  FileUtils.cp(ob_bindings_dir+"/openbabel.so", "./")
+  FileUtils.cp(ob_bindings_dir+"/openbabel.#{RbConfig::CONFIG["DLEXT"]}", "./")
+	File.open('Makefile', 'w') do |makefile|
+		makefile.write <<"EOF"
+.PHONY: openbabel.#{RbConfig::CONFIG["DLEXT"]}
+openbabel.#{RbConfig::CONFIG["DLEXT"]}:
+	chmod 755 openbabel.#{RbConfig::CONFIG["DLEXT"]}
+
+.PHONY: install
+install:
+	mkdir -p ../../lib/openbabel
+	mv openbabel.#{RbConfig::CONFIG["DLEXT"]} ../../lib/openbabel
+EOF
+	end
 ensure
   FileUtils.remove_entry_secure main_dir
 end
