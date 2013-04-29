@@ -37,7 +37,7 @@ begin
     ob_include=`pkg-config openbabel-2.0 --cflags-only-I`.sub(/\s+/,'').sub(/-I/,'')
     ob_lib=`pkg-config openbabel-2.0 --libs-only-L`.sub(/\s+/,'').sub(/-L/,'')
     system "#{RUBY} extconf.rb --with-openbabel-include=#{ob_include} --with-openbabel-lib=#{ob_lib}"
-    system "sed -i -e 's/-flat_namespace//' Makefile"
+    system "sed -i -e 's/-Wl,-flat_namespace//;s/-flat_namespace//' Makefile"
     system "make"
   end
   FileUtils.cp(ob_bindings_dir+"/openbabel.#{RbConfig::CONFIG["DLEXT"]}", "./")
