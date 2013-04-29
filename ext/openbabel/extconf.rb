@@ -5,6 +5,9 @@ require 'mkmf'
 ob_num_ver="2.3.1"
 ob_ver="openbabel-"+ob_num_ver
 
+RUBY=File.join(RbConfig::CONFIG['bindir'],
+               RbConfig::CONFIG['ruby_install_name'])
+
 main_dir = File.expand_path(File.join(File.dirname(__FILE__),"..","..","src"))
 lib_dir = File.expand_path(File.join(File.dirname(__FILE__),"..","..","src"))
 Dir.mkdir main_dir
@@ -33,7 +36,7 @@ begin
     # get include and lib from pkg-config
     ob_include=`pkg-config openbabel-2.0 --cflags-only-I`.sub(/\s+/,'').sub(/-I/,'')
     ob_lib=`pkg-config openbabel-2.0 --libs-only-L`.sub(/\s+/,'').sub(/-L/,'')
-    system "ruby extconf.rb --with-openbabel-include=#{ob_include} --with-openbabel-lib=#{ob_lib}"
+    system "#{RUBY} extconf.rb --with-openbabel-include=#{ob_include} --with-openbabel-lib=#{ob_lib}"
     system "sed -i -e 's/-flat_namespace//' Makefile"
     system "make"
   end
