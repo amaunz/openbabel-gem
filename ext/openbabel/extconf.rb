@@ -1,9 +1,11 @@
 require 'fileutils'
 require 'tmpdir'
 require 'mkmf'
+$:.unshift File.expand_path('../../../lib', __FILE__)
+require 'openbabel/version'
 
-ob_num_ver="2.3.1"
-ob_ver="openbabel-"+ob_num_ver
+ob_num_ver = OpenBabel::VERSION
+ob_ver     = "openbabel-"+ob_num_ver
 
 RUBY=File.join(RbConfig::CONFIG['bindir'],
                RbConfig::CONFIG['ruby_install_name'])
