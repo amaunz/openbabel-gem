@@ -1,6 +1,9 @@
+$:.unshift File.expand_path('../lib', __FILE__)
+require 'openbabel/version'
+
 Gem::Specification.new do |s|
   s.name               = "openbabel"
-  s.version            = "2.3.1.6"
+  s.version            = OpenBabel::GEMVERSION
 
   s.authors = ["Andreas Maunz, Christoph Helma"]
   s.date = %q{2012-04-03}
@@ -12,6 +15,6 @@ Gem::Specification.new do |s|
   s.summary = %q{OpenBabel!}
   s.test_files = ["test/test_openbabel.rb"]
 
-  s.files = ["Rakefile", "lib/openbabel.rb"]
+  s.files = %w{Rakefile lib/openbabel.rb lib/openbabel/version.rb}
   s.extensions = ['ext/openbabel/extconf.rb']
 end
