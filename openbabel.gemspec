@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.name               = "openbabel"
   s.version            = OpenBabel::GEMVERSION
 
-  s.authors = ["Andreas Maunz, Christoph Helma"]
+  s.authors = ["Andreas Maunz, Christoph Helma, Katsuhiko Nishimra"]
   s.date = %q{2012-04-03}
   s.description = %q{OpenBabel as a GEM}
   s.email = %q{andreas@maunz.de}
