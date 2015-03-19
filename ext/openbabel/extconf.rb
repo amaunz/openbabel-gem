@@ -21,6 +21,7 @@ begin
     FileUtils.rm_rf ob_main_dir
     puts "Downloading OpenBabel sources"
     system "curl -L -d use_mirror=netcologne 'http://downloads.sourceforge.net/project/openbabel/openbabel/#{ob_num_ver}/openbabel-#{ob_num_ver}.tar.gz' | tar xz"
+    system "sed -i -e 's/\\bConfig::CONFIG/RbConfig::CONFIG/' #{File.join ruby_src_dir, "extconf.rb"}" # Use RbConfig instread of Config
   end
   Dir.chdir ob_main_dir do
     puts "Configuring OpenBabel"
